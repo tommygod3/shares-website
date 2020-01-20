@@ -20,6 +20,13 @@ export class StockService {
       );
   }
 
+  get(symbol: string): Observable<Stock> {
+    return this.http.get<Stock>(`${this.apiURL}/${symbol}`)
+      .pipe(
+        catchError(this.handleError<Stock>('get', {}))
+      );
+  }
+
   update(symbol: string, stockItem: Object): Observable<Stock> {
     return this.http.put<Stock>(`${this.apiURL}/${symbol}`, stockItem)
       .pipe(

@@ -17,12 +17,20 @@ import { FormsModule } from '@angular/forms';
 import { MatSortModule } from '@angular/material/sort';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { ReactiveFormsModule } from '@angular/forms'
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatListModule } from '@angular/material/list';
+
+import { PurchaseStockComponent } from './purchase-stock/purchase-stock.component'
 
 @NgModule({
   declarations: [
     AppComponent,
-    StockTableComponent
+    StockTableComponent,
+    PurchaseStockComponent
+  ],
+  entryComponents: [
+    PurchaseStockComponent
   ],
   imports: [
     BrowserModule,
@@ -39,7 +47,9 @@ import { ReactiveFormsModule } from '@angular/forms'
     MatInputModule,
     MatDialogModule,
     FormsModule,
-    MatSortModule
+    MatSortModule,
+    MatDividerModule,
+    MatListModule
   ],
   providers: [],
   bootstrap: [AppComponent]
