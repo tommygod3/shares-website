@@ -13,8 +13,8 @@ export class StockService {
 
   private apiURL = 'https://127.0.0.1:5001/stock';
 
-  getAll(): Observable<Stock[]> {
-    return this.http.get<Stock[]>(this.apiURL)
+  getAll(currency: string): Observable<Stock[]> {
+    return this.http.get<Stock[]>(`${this.apiURL}?currency=${currency}`)
       .pipe(
         catchError(this.handleError<Stock[]>('get', {}))
       );

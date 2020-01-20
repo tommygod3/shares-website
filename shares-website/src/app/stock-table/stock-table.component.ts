@@ -6,6 +6,9 @@ import { SelectionModel } from '@angular/cdk/collections';
 
 import { Stock } from './stock';
 import { StockService } from './stock.service';
+import { Currency } from './currency';
+import { CurrencyService } from './currency.service';
+import { CurrencyPipe } from '@angular/common';
 
 @Component({
   selector: 'app-stock-table',
@@ -14,16 +17,21 @@ import { StockService } from './stock.service';
 })
 export class StockTableComponent implements OnInit {
 
-  constructor(private stockService: StockService) { }
+  constructor(private stockService: StockService,
+    private currencyService: CurrencyService) { }
 
   ngOnInit() {
-    this.getAllStock();
+    this.getCurrencies();
+    this.refresh();
+    this.currency = 'USD';
   }
 
   lastUpdated: string;
-  stock: Stock[];
+  stockList: Stock[];
+  currencyList: Currency[];
+  currency: string;
 
-  dataSource = new MatTableDataSource<Stock>(this.stock);
+  dataSource = new MatTableDataSource<Stock>(this.stockList);
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
@@ -33,13 +41,19 @@ export class StockTableComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  getAllStock() {
-    this.stockService.getAll().subscribe(retrievedStock => {
-      this.stock = retrievedStock;
-      this.dataSource = new MatTableDataSource<Stock>(this.stock);
+  refresh() {
+    this.stockService.getAll(this.currency).subscribe(retrievedStock => {
+      this.stockList = retrievedStock;
+      this.dataSource = new MatTableDataSource<Stock>(this.stockList);
       this.dataSource.sort = this.sort;
     });
     this.lastUpdated = new Date().toLocaleString();
+  }
+
+  getCurrencies() {
+    this.currencyService.getAll().subscribe(retrievedCurrencies => {
+      this.currencyList = retrievedCurrencies;
+    });
   }
 
 }
