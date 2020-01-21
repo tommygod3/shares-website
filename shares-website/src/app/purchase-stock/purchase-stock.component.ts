@@ -10,6 +10,7 @@ export interface DialogData {
   numberAvailable: number;
   numberOwned: number;
   quantity: number;
+  selling: boolean;
 }
 
 @Component({
@@ -23,14 +24,22 @@ export class PurchaseStockComponent implements OnInit {
     public dialogRef: MatDialogRef<PurchaseStockComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
 
-  ngOnInit() {
-  }
+    ngOnInit() {
+    }
 
-  onNoClick(): void {
-    this.dialogRef.close(false);
-  }
+    purchase() {
+      this.data.selling = false;
+    }
 
-  onConfirmClick(): void {
-    this.dialogRef.close(true);
-  }
+    selling() {
+      this.data.selling = true;
+    }
+
+    onNoClick(): void {
+      this.dialogRef.close(false);
+    }
+
+    onConfirmClick(): void {
+      this.dialogRef.close(true);
+    }
 }

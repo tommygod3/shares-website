@@ -18,6 +18,7 @@ import { Ownership } from './ownership';
 import { UserService } from './user.service';
 import { LoginDetails } from './login-details';
 import { PurchaseService } from './purchase.service';
+import { SellService } from './sell-service';
 
 @Component({
   selector: 'app-stock-table',
@@ -30,6 +31,7 @@ export class StockTableComponent implements OnInit {
     private currencyService: CurrencyService,
     private userService: UserService,
     private purchaseService: PurchaseService,
+    private sellService: SellService,
     public dialog: MatDialog) { }
 
   ngOnInit() {
@@ -100,7 +102,7 @@ export class StockTableComponent implements OnInit {
   openPurchase(stock: Stock): void {
     const dialogRef = this.dialog.open(PurchaseStockComponent, {
       width: '20%',
-      height: '60%',
+      height: '50%',
       data: {
         symbol: stock.symbol,
         name: stock.name,
@@ -117,7 +119,12 @@ export class StockTableComponent implements OnInit {
           quantity: +result.quantity,
           symbol: result.symbol
         }
-        this.purchaseService.create(this.user, body).subscribe(updatedUser => this.updateUser(updatedUser));
+        if (result.selling) {
+          this.sellService.create(this.user, body).subscribe(updatedUser => this.updateUser(updatedUser, this.user.password));
+        }
+        else {
+          this.purchaseService.create(this.user, body).subscribe(updatedUser => this.updateUser(updatedUser, this.user.password));
+        }
       }
     });
   }
@@ -162,10 +169,13 @@ export class StockTableComponent implements OnInit {
     });
   }
 
-  updateUser(user: User, password?: string): void {
+  updateUser(user: User, password: string): void {
     this.user = user;
-    if (password) this.user.password = password;
+    if (password) {
+      this.user.password = password;
+    }
     this.refresh();
+    
   }
 
   logout(): void {

@@ -34,6 +34,6 @@
   </mat-list>
 </div>
 <div mat-dialog-actions class="justify-center">
-  <button mat-button (click)="onNoClick()">Close</button>
-  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Purchase</button>
+  <button mat-icon-button (click)="purchase()" [mat-dialog-close]="data" cdkFocusInitial><mat-icon>add_shopping_cart</mat-icon></button>
+  <button mat-icon-button (click)="selling()" [mat-dialog-close]="data" cdkFocusInitial><mat-icon>remove_shopping_cart</mat-icon></button>
 </div>
