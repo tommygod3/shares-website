@@ -20,17 +20,21 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
+import { MatCardModule } from '@angular/material/card';
 
-import { PurchaseStockComponent } from './purchase-stock/purchase-stock.component'
+import { PurchaseStockComponent } from './purchase-stock/purchase-stock.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     StockTableComponent,
-    PurchaseStockComponent
+    PurchaseStockComponent,
+    LoginComponent
   ],
   entryComponents: [
-    PurchaseStockComponent
+    PurchaseStockComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +53,8 @@ import { PurchaseStockComponent } from './purchase-stock/purchase-stock.componen
     FormsModule,
     MatSortModule,
     MatDividerModule,
-    MatListModule
+    MatListModule,
+    MatCardModule
   ],
   providers: [],
   bootstrap: [AppComponent]

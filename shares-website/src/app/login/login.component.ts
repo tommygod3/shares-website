@@ -1,25 +1,21 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
-
 export interface DialogData {
-  symbol: string;
-  name: string;
-  price: number;
-  currency: string;
-  numberAvailable: number;
-  quantity: number;
+  username: string;
+  password: string;
+  action: string;
 }
 
 @Component({
-  selector: 'app-purchase-stock',
-  templateUrl: './purchase-stock.component.html',
-  styleUrls: ['./purchase-stock.component.css']
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
 })
-export class PurchaseStockComponent implements OnInit {
+export class LoginComponent implements OnInit {
 
   constructor(
-    public dialogRef: MatDialogRef<PurchaseStockComponent>,
+    public dialogRef: MatDialogRef<LoginComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
 
   ngOnInit() {

@@ -12,6 +12,11 @@ import { StockService } from './stock.service';
 import { Currency } from './currency';
 import { CurrencyService } from './currency.service';
 import { Transaction } from './transaction';
+import { LoginComponent } from '../login/login.component';
+import { User } from './user';
+import { Ownership } from './ownership';
+import { UserService } from './user.service';
+import { LoginDetails } from './login-details';
 
 @Component({
   selector: 'app-stock-table',
@@ -22,24 +27,30 @@ export class StockTableComponent implements OnInit {
 
   constructor(private stockService: StockService,
     private currencyService: CurrencyService,
+    private userService: UserService,
     public dialog: MatDialog) { }
 
   ngOnInit() {
     this.getCurrencies();
     this.refresh();
     this.currency = 'USD';
+    this.isLoggedIn = false;
   }
 
   lastUpdated: string;
   stockList: Stock[];
   currencyList: Currency[];
   currency: string;
+  isLoggedIn: boolean;
+  username: string;
+  wallet: number;
+  stockOwned: Array<Ownership>;
 
   dataSource = new MatTableDataSource<Stock>(this.stockList);
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  displayedColumns: string[] = ['symbol', 'name', 'price', 'currency', 'numberAvailable'];
+  displayedColumns: string[] = ['symbol', 'name', 'price', 'currency', 'numberAvailable', 'numberOwned'];
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -52,6 +63,9 @@ export class StockTableComponent implements OnInit {
       this.dataSource.sort = this.sort;
     });
     this.lastUpdated = new Date().toLocaleString();
+    if (!this.isLoggedIn) {
+      
+    }
   }
 
   getCurrencies(): void {
@@ -90,6 +104,61 @@ export class StockTableComponent implements OnInit {
         //this.stockService.update(result.productCode, body).subscribe(changedStock => this.updateStockItem(changedStock));
       }
     });
+  }
+
+  login(): void {
+    const dialogRef = this.dialog.open(LoginComponent, {
+      width: '20%',
+      height: '40%',
+      data: {
+        action: "Login"
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const body: LoginDetails = {
+          username: result.username,
+          password: result.password
+        }
+        this.userService.get(result).subscribe(loggedInUser => this.updateCredentials(loggedInUser));
+      }
+    });
+  }
+
+  register(): void {
+    const dialogRef = this.dialog.open(LoginComponent, {
+      width: '20%',
+      height: '40%',
+      data: {
+        action: "Register"
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const body: LoginDetails = {
+          username: result.username,
+          password: result.password
+        }
+        this.userService.create(result).subscribe(newUser => this.updateCredentials(newUser));
+      }
+    });
+  }
+
+  updateCredentials(user: User): void {
+    this.isLoggedIn = true;
+    this.username = user.username;
+    this.wallet = user.wallet;
+    this.stockOwned = user.stockOwned;
+    console.log(this.stockOwned);
+  }
+
+  logout(): void {
+    this.isLoggedIn = false;
+    this.username = null;
+    this.wallet = null;
+    this.stockOwned = null;
   }
 
 }

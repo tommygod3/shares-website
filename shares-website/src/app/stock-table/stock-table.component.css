@@ -1,29 +1,30 @@
 table {
-    width: 100%;
-  }
+  width: 100%;
+}
   
-  .mat-row:hover {
-    background-color: lightgrey;
-    cursor: pointer;
-  }
-  
-  .mat-form-field {
-    font-size: 14px;
-    width: 25%;
-  }
-  
-  .toolbar-fill {
-    flex: 1 1 auto;
-  }
-  
-  .toolbar-rows button:hover {
-    background-color: lightgrey;
-  }
-  
-  .toolbar-rows {
-    height: 3rem;
-  }
-  
-  .time-update {
-    font-size: 0.7rem;
-  }
+.mat-row:hover {
+  background-color: lightgrey;
+  cursor: pointer;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 25%;
+}
+
+.toolbar-fill {
+  flex: 1 1 auto;
+}
+
+.toolbar-rows button:hover {
+  background-color: lightgrey;
+}
+
+.toolbar-rows {
+  height: 3rem;
+  margin-top: 5px;
+}
+
+.time-update {
+  font-size: 0.7rem;
+}
