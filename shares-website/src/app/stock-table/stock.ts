@@ -5,4 +5,5 @@ export class Stock {
     price: number;
     currency: string;
     numberAvailable: number;
+    numberOwned: number;
 }

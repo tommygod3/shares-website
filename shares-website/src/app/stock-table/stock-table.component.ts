@@ -32,9 +32,9 @@ export class StockTableComponent implements OnInit {
 
   ngOnInit() {
     this.getCurrencies();
-    this.refresh();
     this.currency = 'USD';
     this.isLoggedIn = false;
+    this.refresh();
   }
 
   lastUpdated: string;
@@ -59,13 +59,24 @@ export class StockTableComponent implements OnInit {
   refresh() {
     this.stockService.getAll(this.currency).subscribe(retrievedStock => {
       this.stockList = retrievedStock;
+      this.stockList.forEach(stock => {
+        stock.numberOwned = this.getOwnership(stock.symbol);
+      });
       this.dataSource = new MatTableDataSource<Stock>(this.stockList);
       this.dataSource.sort = this.sort;
     });
     this.lastUpdated = new Date().toLocaleString();
-    if (!this.isLoggedIn) {
-      
+  }
+
+  getOwnership(symbol: string): number {
+    if (this.isLoggedIn) {
+      this.stockOwned.forEach(stock => {
+        if (stock.symbol == symbol) {
+          return stock.amountOwned;
+        }
+      });
     }
+    return 0;
   }
 
   getCurrencies(): void {
