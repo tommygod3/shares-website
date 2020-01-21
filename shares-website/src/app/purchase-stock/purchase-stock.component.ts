@@ -8,6 +8,7 @@ export interface DialogData {
   price: number;
   currency: string;
   numberAvailable: number;
+  numberOwned: number;
   quantity: number;
 }
 

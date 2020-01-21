@@ -87,6 +87,7 @@ export class StockTableComponent implements OnInit {
 
   showStockDetails(stock: Stock): void {
     this.stockService.get(stock.symbol).subscribe(retrievedStock => {
+      retrievedStock.numberOwned = this.getOwnership(retrievedStock.symbol);
       this.openPurchase(retrievedStock);
     });
   }
@@ -94,13 +95,14 @@ export class StockTableComponent implements OnInit {
   openPurchase(stock: Stock): void {
     const dialogRef = this.dialog.open(PurchaseStockComponent, {
       width: '20%',
-      height: '50%',
+      height: '60%',
       data: {
         symbol: stock.symbol,
         name: stock.name,
         price: stock.price,
         currency: stock.currency,
-        numberAvailable: stock.numberAvailable
+        numberAvailable: stock.numberAvailable,
+        numberOwned: stock.numberOwned
       }
     });
 
