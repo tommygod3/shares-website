@@ -1,17 +1,17 @@
 <mat-toolbar>
   <mat-toolbar-row class="toolbar-rows">
-    <div *ngIf="isLoggedIn">
-        <span><h1>{{ username }}</h1></span>
-        <sub>Wallet: ${{ wallet }}</sub>
+    <div *ngIf="user">
+        <span><h1>{{ user.username }}</h1></span>
+        <sub>Wallet: ${{ user.wallet }}</sub>
     </div>
 
     <span class="toolbar-fill"></span>
-    <div *ngIf="isLoggedIn">
+    <div *ngIf="user">
       <button mat-button color="primary" aria-label="Logout" (click)="logout()">
         Logout
       </button>
     </div>
-    <div *ngIf="!isLoggedIn">
+    <div *ngIf="!user">
       <button mat-raised-button color="primary" aria-label="Login" (click)="login()">
         Login
       </button>

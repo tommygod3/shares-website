@@ -1,0 +1,9 @@
+.justify-center {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.disabled-input {
+    pointer-events: none;
+    opacity: 0.99;
+}

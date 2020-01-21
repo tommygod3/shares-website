@@ -17,6 +17,7 @@ import { User } from './user';
 import { Ownership } from './ownership';
 import { UserService } from './user.service';
 import { LoginDetails } from './login-details';
+import { PurchaseService } from './purchase.service';
 
 @Component({
   selector: 'app-stock-table',
@@ -28,12 +29,12 @@ export class StockTableComponent implements OnInit {
   constructor(private stockService: StockService,
     private currencyService: CurrencyService,
     private userService: UserService,
+    private purchaseService: PurchaseService,
     public dialog: MatDialog) { }
 
   ngOnInit() {
     this.getCurrencies();
     this.currency = 'USD';
-    this.isLoggedIn = false;
     this.refresh();
   }
 
@@ -41,10 +42,7 @@ export class StockTableComponent implements OnInit {
   stockList: Stock[];
   currencyList: Currency[];
   currency: string;
-  isLoggedIn: boolean;
-  username: string;
-  wallet: number;
-  stockOwned: Array<Ownership>;
+  user: User;
 
   dataSource = new MatTableDataSource<Stock>(this.stockList);
 
@@ -69,14 +67,21 @@ export class StockTableComponent implements OnInit {
   }
 
   getOwnership(symbol: string): number {
-    if (this.isLoggedIn) {
-      this.stockOwned.forEach(stock => {
-        if (stock.symbol == symbol) {
-          return stock.amountOwned;
-        }
-      });
+    if (!this.user) {
+      return 0;
     }
-    return 0;
+    let found = 0;
+    this.user.stockOwned.forEach(stock => {
+      if (stock.symbol == symbol) {
+        found = stock.amountOwned;
+      }
+    });
+    if (found == 0) {
+      return 0;
+    }
+    else {
+      return found;
+    }
   }
 
   getCurrencies(): void {
@@ -109,22 +114,20 @@ export class StockTableComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         const body: Transaction = {
-          quantity: result.quantity,
+          quantity: +result.quantity,
           symbol: result.symbol
         }
-        //change to trans service
-        console.log(body);
-        //this.stockService.update(result.productCode, body).subscribe(changedStock => this.updateStockItem(changedStock));
+        this.purchaseService.create(this.user, body).subscribe(updatedUser => this.updateUser(updatedUser));
       }
     });
   }
 
   login(): void {
     const dialogRef = this.dialog.open(LoginComponent, {
-      width: '20%',
-      height: '40%',
+      width: '15%',
+      height: '30%',
       data: {
-        action: "Login"
+        action: 'Login'
       }
     });
 
@@ -134,17 +137,17 @@ export class StockTableComponent implements OnInit {
           username: result.username,
           password: result.password
         }
-        this.userService.get(result).subscribe(loggedInUser => this.updateCredentials(loggedInUser));
+        this.userService.get(result).subscribe(loggedInUser => this.updateUser(loggedInUser, result.password));
       }
     });
   }
 
   register(): void {
     const dialogRef = this.dialog.open(LoginComponent, {
-      width: '20%',
-      height: '40%',
+      width: '15%',
+      height: '30%',
       data: {
-        action: "Register"
+        action: 'Register'
       }
     });
 
@@ -154,24 +157,19 @@ export class StockTableComponent implements OnInit {
           username: result.username,
           password: result.password
         }
-        this.userService.create(result).subscribe(newUser => this.updateCredentials(newUser));
+        this.userService.create(result).subscribe(newUser => this.updateUser(newUser, result.password));
       }
     });
   }
 
-  updateCredentials(user: User): void {
-    this.isLoggedIn = true;
-    this.username = user.username;
-    this.wallet = user.wallet;
-    this.stockOwned = user.stockOwned;
-    console.log(this.stockOwned);
+  updateUser(user: User, password?: string): void {
+    this.user = user;
+    if (password) this.user.password = password;
+    this.refresh();
   }
 
   logout(): void {
-    this.isLoggedIn = false;
-    this.username = null;
-    this.wallet = null;
-    this.stockOwned = null;
+    this.user = null;
   }
 
 }
