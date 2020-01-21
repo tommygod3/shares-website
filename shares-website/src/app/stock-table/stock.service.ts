@@ -14,47 +14,23 @@ export class StockService {
   private apiURL = 'https://127.0.0.1:5001/stock';
 
   getAll(currency: string): Observable<Stock[]> {
-    return this.http.get<Stock[]>(`${this.apiURL}?currency=${currency}`)
-      .pipe(
-        catchError(this.handleError<Stock[]>('get', {}))
-      );
+    return this.http.get<Stock[]>(`${this.apiURL}?currency=${currency}`);
   }
 
   get(symbol: string): Observable<Stock> {
-    return this.http.get<Stock>(`${this.apiURL}/${symbol}`)
-      .pipe(
-        catchError(this.handleError<Stock>('get', {}))
-      );
+    return this.http.get<Stock>(`${this.apiURL}/${symbol}`);
   }
 
   update(symbol: string, stockItem: Object): Observable<Stock> {
-    return this.http.put<Stock>(`${this.apiURL}/${symbol}`, stockItem)
-      .pipe(
-        catchError(this.handleError<Stock>('update', {}))
-      );
+    return this.http.put<Stock>(`${this.apiURL}/${symbol}`, stockItem);
   }
 
   add(stockItem: Object): Observable<Stock> {
-    return this.http.post<Stock>(this.apiURL, stockItem)
-      .pipe(
-        catchError(this.handleError<Stock>('add', {}))
-      );
+    return this.http.post<Stock>(this.apiURL, stockItem);
   }
 
   delete(symbol: string): Observable<Stock>{
-    return this.http.delete<Stock>(`${this.apiURL}/${symbol}`)
-      .pipe(
-        catchError(this.handleError<Stock>('delete', {}))
-      );
+    return this.http.delete<Stock>(`${this.apiURL}/${symbol}`);
   }
 
-  private handleError<T> (operation = 'operation', result?: Object) {
-    return (error: any): Observable<T> => {
-
-      console.error(error); // log to console instead
-
-      // Let the app keep running by returning an empty result.
-      return of(result as T);
-    };
-  }
 }

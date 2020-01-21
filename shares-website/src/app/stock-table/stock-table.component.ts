@@ -18,7 +18,7 @@ import { Ownership } from './ownership';
 import { UserService } from './user.service';
 import { LoginDetails } from './login-details';
 import { PurchaseService } from './purchase.service';
-import { SellService } from './sell-service';
+import { SellService } from './sell.service';
 
 @Component({
   selector: 'app-stock-table',
@@ -180,6 +180,7 @@ export class StockTableComponent implements OnInit {
 
   logout(): void {
     this.user = null;
+    this.refresh();
   }
 
 }

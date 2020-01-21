@@ -18,35 +18,16 @@ export class UserService {
     let headers = new HttpHeaders();
     headers = headers.set('username', user.username).set('password', user.password);
 
-    return this.http.get<User>(this.apiURL, {headers: headers})
-      .pipe(
-        catchError(this.handleError<User>('get', {}))
-      );
+    return this.http.get<User>(this.apiURL, {headers: headers});
   }
 
   create(user: LoginDetails): Observable<User> {
-    return this.http.post<User>(this.apiURL, user)
-      .pipe(
-        catchError(this.handleError<User>('create', {}))
-      );
+    return this.http.post<User>(this.apiURL, user);
   }
 
   delete(user: LoginDetails): Observable<User>{
     let headers = new HttpHeaders();
     headers = headers.set('username', user.username).set('password', user.password);
-    return this.http.delete<User>(this.apiURL, {headers: headers})
-      .pipe(
-        catchError(this.handleError<User>('delete', {}))
-      );
-  }
-
-  private handleError<T> (operation = 'operation', result?: Object) {
-    return (error: any): Observable<T> => {
-
-      console.error(error); // log to console instead
-
-      // Let the app keep running by returning an empty result.
-      return of(result as T);
-    };
+    return this.http.delete<User>(this.apiURL, {headers: headers});
   }
 }

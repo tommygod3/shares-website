@@ -17,21 +17,7 @@ export class PurchaseService {
   create(user: User, transaction: Transaction): Observable<User> {
     let headers = new HttpHeaders();
     headers = headers.set('username', user.username).set('password', user.password);
-    console.log(transaction);
-    console.log(headers);
-    return this.http.post<User>(this.apiURL, transaction, {headers: headers})
-      .pipe(
-        catchError(this.handleError<User>('create', {}))
-      );
+    return this.http.post<User>(this.apiURL, transaction, {headers: headers});
   }
 
-  private handleError<T> (operation = 'operation', result?: Object) {
-    return (error: any): Observable<T> => {
-
-      console.error(error); // log to console instead
-
-      // Let the app keep running by returning an empty result.
-      return of(result as T);
-    };
-  }
 }
