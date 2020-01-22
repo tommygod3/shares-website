@@ -21,21 +21,28 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatCardModule } from '@angular/material/card';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { PurchaseStockComponent } from './purchase-stock/purchase-stock.component';
 import { LoginComponent } from './login/login.component';
 import { HttpErrorInterceptor } from './http-error.interceptor';
+import { TopBarComponent } from './top-bar/top-bar.component';
+import { NewsComponent } from './news/news.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     StockTableComponent,
     PurchaseStockComponent,
-    LoginComponent
+    LoginComponent,
+    TopBarComponent,
+    NewsComponent
   ],
   entryComponents: [
     PurchaseStockComponent,
-    LoginComponent
+    LoginComponent,
+    NewsComponent
   ],
   imports: [
     BrowserModule,
@@ -55,14 +62,17 @@ import { HttpErrorInterceptor } from './http-error.interceptor';
     MatSortModule,
     MatDividerModule,
     MatListModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatCardModule
   ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpErrorInterceptor,
       multi: true
-    }
+    },
+    { provide: MAT_DIALOG_DATA, useValue: {} },
+    { provide: MatDialogRef, useValue: {} }
   ],
   bootstrap: [AppComponent]
 })

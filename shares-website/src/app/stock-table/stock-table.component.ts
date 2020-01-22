@@ -3,7 +3,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { SelectionModel } from '@angular/cdk/collections';
 
 import { PurchaseStockComponent } from '../purchase-stock/purchase-stock.component';
 
@@ -14,7 +13,6 @@ import { CurrencyService } from './currency.service';
 import { Transaction } from './transaction';
 import { LoginComponent } from '../login/login.component';
 import { User } from './user';
-import { Ownership } from './ownership';
 import { UserService } from './user.service';
 import { LoginDetails } from './login-details';
 import { PurchaseService } from './purchase.service';
